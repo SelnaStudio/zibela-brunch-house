@@ -97,6 +97,11 @@
 
   :focus-visible{outline:2.5px solid var(--olive-deep);outline-offset:3px;border-radius:2px}
 
+  .skip{position:fixed;left:1rem;top:0;z-index:200;transform:translateY(-130%);
+    background:var(--cream);color:var(--ink);padding:.6rem 1.1rem;border-radius:0 0 10px 10px;
+    font-weight:600;font-size:.85rem;box-shadow:var(--shadow);transition:transform .2s ease}
+  .skip:focus{transform:translateY(0)}
+
   .wrap{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad)}
   .eyebrow{
     font-family:var(--ff-text);font-size:.75rem;font-weight:700;
@@ -213,30 +218,35 @@
   @keyframes slide{to{transform:translateX(-50%)}}
   @media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
 
-  /* pinned scroll — la carta */
-  .scroller{position:relative;height:calc(100svh + 6 * 46vh);margin-block:clamp(1.5rem,4vw,3rem)}
-  .scroller__pin{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--ink)}
-  .scroller__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.07);transition:opacity 1s ease,transform 7s ease}
-  .scroller__img.is-active{opacity:1;transform:scale(1)}
-  .scroller__pin::after{content:"";position:absolute;inset:0;pointer-events:none;background:
-    linear-gradient(180deg,rgba(18,20,14,.62) 0%,rgba(18,20,14,.2) 30%,rgba(18,20,14,.5) 60%,rgba(18,20,14,.88) 100%)}
-  .scroller__stage{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
-    padding:clamp(4.5rem,11vw,6.5rem) var(--pad) clamp(4.5rem,8vw,5rem)}
-  .scroller__inner{max-width:var(--maxw);margin-inline:auto;width:100%;flex:1;display:flex;flex-direction:column;color:var(--cream)}
-  .scroller__ticks{display:flex;gap:.45rem}
-  .scroller__ticks i{width:38px;max-width:14vw;height:3px;border-radius:2px;background:rgba(252,249,240,.26);transition:background .5s ease}
-  .scroller__ticks i.on{background:var(--cream)}
-  .scroller__panel{margin-top:auto;max-width:36rem;transition:opacity .4s ease,transform .4s cubic-bezier(.2,.7,.2,1)}
-  .scroller__count{font-family:var(--ff-display);font-style:italic;font-size:1.05rem;color:#dcd08c;display:block;margin-bottom:.5rem;letter-spacing:.02em}
-  .scroller__panel h3{font-size:clamp(2.4rem,7.4vw,4.6rem);color:var(--cream);margin-bottom:.55rem;font-variation-settings:"opsz" 120,"SOFT" 45,"WONK" 1}
-  .scroller__panel p{color:rgba(252,249,240,.88);font-size:clamp(1rem,.4vw + .9rem,1.16rem);max-width:32rem}
+  /* la carta — carrusel */
+  .carousel{position:relative;height:clamp(32rem,100svh,50rem);overflow:hidden;background:var(--ink);
+    margin-block:clamp(1.5rem,4vw,3rem);touch-action:pan-y;user-select:none;-webkit-user-select:none}
+  .carousel__frame{position:absolute;inset:0}
+  .carousel__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1.1s ease,transform 6.5s ease;pointer-events:none}
+  .carousel__img.is-active{opacity:1;transform:scale(1)}
+  .carousel__frame::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:
+    linear-gradient(180deg,rgba(18,20,14,.6) 0%,rgba(18,20,14,.18) 30%,rgba(18,20,14,.48) 60%,rgba(18,20,14,.88) 100%)}
+  .carousel__stage{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+    padding:clamp(4.5rem,11vw,6.5rem) var(--pad) clamp(4rem,7vw,4.5rem)}
+  .carousel__inner{max-width:var(--maxw);margin-inline:auto;width:100%;flex:1;display:flex;flex-direction:column;color:var(--cream)}
+  .carousel__ticks{display:flex;gap:.45rem}
+  .carousel__tick{appearance:none;-webkit-appearance:none;border:0;padding:0;margin:0;cursor:pointer;
+    width:38px;max-width:14vw;height:3px;border-radius:2px;background:rgba(252,249,240,.26);transition:background .5s ease}
+  .carousel__tick.on{background:var(--cream)}
+  .carousel__tick:hover{background:rgba(252,249,240,.55)}
+  .carousel__tick:focus-visible{outline:2px solid var(--cream);outline-offset:4px}
+  .carousel__panel{margin-top:auto;max-width:36rem;transition:opacity .45s ease,transform .45s cubic-bezier(.2,.7,.2,1)}
+  .carousel__count{font-family:var(--ff-display);font-style:italic;font-size:1.05rem;color:#dcd08c;display:block;margin-bottom:.5rem;letter-spacing:.02em}
+  .carousel__panel h3{font-size:clamp(2.4rem,7.4vw,4.6rem);color:var(--cream);margin-bottom:.55rem;font-variation-settings:"opsz" 120,"SOFT" 45,"WONK" 1}
+  .carousel__panel p{color:rgba(252,249,240,.88);font-size:clamp(1rem,.4vw + .9rem,1.16rem);max-width:32rem}
+  .carousel__hint{margin:.8rem 0 0;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(252,249,240,.55)}
 
   .carta__note{margin-top:clamp(1.6rem,4vw,2.4rem);font-family:var(--ff-display);font-style:italic;font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--ink-soft);max-width:52ch}
   .carta__menu-link{margin-top:1.4rem}
   @media (prefers-reduced-motion:reduce){
-    .scroller__img{transition:opacity .25s linear;transform:none}
-    .scroller__img.is-active{transform:none}
-    .scroller__panel{transition:opacity .2s linear}
+    .carousel__img{transition:opacity .25s linear;transform:none}
+    .carousel__img.is-active{transform:none}
+    .carousel__panel{transition:opacity .2s linear}
   }
 
   /* ---------- casa ---------- */
@@ -317,22 +327,22 @@
   }
 </style>
 <noscript><style>
-  .scroller{height:auto;margin-block:1.5rem}
-  .scroller__pin{position:static;height:auto;background:transparent;display:grid;gap:1rem}
-  .scroller__img{position:relative;opacity:1;height:auto;aspect-ratio:4/3;transform:none;border-radius:6px}
-  .scroller__pin::after{display:none}
-  .scroller__stage{position:static;padding:0}
-  .scroller__ticks{display:none}
-  .scroller__inner{color:var(--ink)}
-  .scroller__panel{margin:0}
-  .scroller__panel h3{color:var(--ink);font-size:clamp(1.6rem,4vw,2.2rem)}
-  .scroller__panel p{color:var(--ink-soft)}
-  .scroller__count{color:var(--olive-deep)}
+  .carousel{height:auto;background:transparent;margin-block:1.5rem}
+  .carousel__frame{position:static;display:grid;gap:1rem}
+  .carousel__frame::after{display:none}
+  .carousel__img{position:relative;opacity:1;height:auto;aspect-ratio:4/3;transform:none;border-radius:6px}
+  .carousel__stage{position:static;padding:0}
+  .carousel__ticks,.carousel__hint{display:none}
+  .carousel__inner{color:var(--ink)}
+  .carousel__panel{margin:0}
+  .carousel__panel h3{color:var(--ink);font-size:clamp(1.6rem,4vw,2.2rem)}
+  .carousel__panel p{color:var(--ink-soft)}
+  .carousel__count{color:var(--olive-deep)}
 </style></noscript>
 </head>
 <body>
 
-<a href="#carta" class="btn--ghost" style="position:absolute;left:-9999px;top:0;padding:.6rem 1rem;background:var(--cream);z-index:200" onfocus="this.style.left='1rem';this.style.top='1rem'" onblur="this.style.left='-9999px'">Saltar a la carta</a>
+<a href="#carta" class="skip">Saltar a la carta</a>
 
 <header class="nav" id="nav">
   <a href="#top" class="nav__logo" aria-label="Zibela Brunch House — inicio">
@@ -431,19 +441,27 @@
 
     </div>
 
-    <div class="scroller" id="cartaScroller" aria-label="Recorrido por la carta">
-      <div class="scroller__pin">
-        <img class="scroller__img is-active" src="assets/toast-salmon.webp" alt="Toast de salmón ahumado y trufa sobre pan de masa madre" width="1080" height="628">
-        <img class="scroller__img" src="assets/bagel-bacon.webp" alt="Bagel de jamón, tocino y lechuga con hilo de miel" width="1080" height="564">
-        <img class="scroller__img" src="assets/eggs.webp" alt="Huevos al gusto en salsa, servidos con pan de masa madre" width="1179" height="1073">
-        <img class="scroller__img" src="assets/melt.webp" alt="Melt de cuatro quesos y romero con crema de jitomate rostizado" width="1179" height="1217">
-        <img class="scroller__img" src="assets/smoothie.webp" alt="Smoothie cremoso servido en copa alta en el jardín" width="1100" height="1249">
-        <img class="scroller__img" src="assets/cafe.webp" alt="Cappuccino en taza de cerámica color olivo, con luz de la mañana" width="1000" height="826">
-        <div class="scroller__stage">
-          <div class="scroller__inner">
-            <div class="scroller__ticks" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
-            <div class="scroller__panel" id="cartaPanel">
-              <span class="scroller__count">01 — 06</span>
+    <div class="carousel" id="cartaCarousel" aria-label="La carta, en imágenes" aria-roledescription="carrusel">
+      <div class="carousel__frame">
+        <img class="carousel__img is-active" src="assets/toast-salmon.webp" alt="Toast de salmón ahumado y trufa sobre pan de masa madre" width="1080" height="628">
+        <img class="carousel__img" src="assets/bagel-bacon.webp" alt="Bagel de jamón, tocino y lechuga con hilo de miel" width="1080" height="564">
+        <img class="carousel__img" src="assets/eggs.webp" alt="Huevos al gusto en salsa, servidos con pan de masa madre" width="1179" height="1073">
+        <img class="carousel__img" src="assets/melt.webp" alt="Melt de cuatro quesos y romero con crema de jitomate rostizado" width="1179" height="1217">
+        <img class="carousel__img" src="assets/smoothie.webp" alt="Smoothie cremoso servido en copa alta en el jardín" width="1100" height="1249">
+        <img class="carousel__img" src="assets/cafe.webp" alt="Cappuccino en taza de cerámica color olivo, con luz de la mañana" width="1000" height="826">
+        <div class="carousel__stage">
+          <div class="carousel__inner">
+            <div class="carousel__ticks" role="tablist" aria-label="Elegir platillo">
+              <button class="carousel__tick on" type="button" aria-label="Toasts"></button>
+              <button class="carousel__tick" type="button" aria-label="Bagels"></button>
+              <button class="carousel__tick" type="button" aria-label="Chilaquiles y huevos"></button>
+              <button class="carousel__tick" type="button" aria-label="Melts y sandwiches"></button>
+              <button class="carousel__tick" type="button" aria-label="Smoothies y matcha"></button>
+              <button class="carousel__tick" type="button" aria-label="Café de especialidad"></button>
+            </div>
+            <p class="carousel__hint" aria-hidden="true">Cambia sola · desliza o toca las líneas</p>
+            <div class="carousel__panel" id="cartaPanel" aria-live="off">
+              <span class="carousel__count">01 — 06</span>
               <h3>Toasts</h3>
               <p>Masa madre propia. Aguacate con requesón picante y huevo, o salmón ahumado con arúgula y holandesa trufada.</p>
             </div>
@@ -545,6 +563,13 @@
 (function(){
   var RM = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
+  // Siempre abrir desde arriba — sin restaurar posición ni saltar a una sección
+  if('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if(!location.hash){
+    window.scrollTo(0, 0);
+    window.addEventListener('load', function(){ if(!location.hash) window.scrollTo(0, 0); });
+  }
+
   // WhatsApp links
   var msg = encodeURIComponent('Hola Zibela 👋 Me gustaría reservar una mesa. ¿Me confirman disponibilidad?');
   var wa = 'https://wa.me/522211044818?text=' + msg;
@@ -643,11 +668,11 @@
     sio.observe(sig);
   } else { sig.classList.add('in'); }
 
-  // La carta — pinned scroll that swaps the dish as you scroll
-  var cs = document.getElementById('cartaScroller');
-  if(cs){
-    var cImgs = cs.querySelectorAll('.scroller__img');
-    var cTicks = cs.querySelectorAll('.scroller__ticks i');
+  // La carta — carrusel que avanza solo cada 2 s y responde a swipe / clic
+  var car = document.getElementById('cartaCarousel');
+  if(car){
+    var cImgs = car.querySelectorAll('.carousel__img');
+    var cTicks = car.querySelectorAll('.carousel__tick');
     var cPanel = document.getElementById('cartaPanel');
     var N = cImgs.length;
     var STEPS = [
@@ -659,39 +684,78 @@
       ['Café de especialidad', 'Grano molido al momento. Americano, cappuccino y coffee tonic con un toque cítrico.']
     ];
     var p2 = function(n){ return (n < 10 ? '0' : '') + n; };
-    var cur = -1;
-    var setStep = function(i){
-      if(i === cur) return;
-      cur = i;
+    var idx = 0, timer = null, inView = false, hovering = false, focused = false;
+    var AUTO = 2000;
+
+    var render = function(){
       for(var k = 0; k < N; k++){
-        cImgs[k].classList.toggle('is-active', k === i);
-        if(cTicks[k]) cTicks[k].classList.toggle('on', k <= i);
+        cImgs[k].classList.toggle('is-active', k === idx);
+        cTicks[k].classList.toggle('on', k === idx);
+        cTicks[k].setAttribute('aria-current', k === idx ? 'true' : 'false');
       }
       cPanel.style.opacity = '0';
       cPanel.style.transform = 'translateY(12px)';
       setTimeout(function(){
-        cPanel.innerHTML = '<span class="scroller__count">' + p2(i + 1) + ' — ' + p2(N) +
-          '</span><h3>' + STEPS[i][0] + '</h3><p>' + STEPS[i][1] + '</p>';
+        cPanel.innerHTML = '<span class="carousel__count">' + p2(idx + 1) + ' — ' + p2(N) +
+          '</span><h3>' + STEPS[idx][0] + '</h3><p>' + STEPS[idx][1] + '</p>';
         cPanel.style.opacity = '1';
         cPanel.style.transform = 'none';
-      }, RM ? 0 : 240);
+      }, RM ? 0 : 220);
     };
-    var cTick = false;
-    var cRun = function(){
-      var total = cs.offsetHeight - window.innerHeight;
-      var scrolled = Math.min(Math.max(-cs.getBoundingClientRect().top, 0), total);
-      var prog = total > 0 ? scrolled / total : 0;
-      var idx = Math.floor(prog * N - 1e-6);
-      idx = Math.max(0, Math.min(N - 1, idx));
-      setStep(idx);
-      cTick = false;
+    var stop = function(){ if(timer){ clearInterval(timer); timer = null; } };
+    var start = function(){
+      stop();
+      if(RM || !inView || hovering || focused) return;
+      timer = setInterval(function(){ idx = (idx + 1) % N; render(); }, AUTO);
     };
-    setStep(0);
-    window.addEventListener('scroll', function(){
-      if(!cTick){ requestAnimationFrame(cRun); cTick = true; }
-    }, {passive:true});
-    window.addEventListener('resize', cRun, {passive:true});
-    cRun();
+    var go = function(n){
+      idx = ((n % N) + N) % N;
+      render();
+      start();               // reinicia el reloj tras una acción del usuario
+    };
+
+    cTicks.forEach(function(t, i){ t.addEventListener('click', function(){ go(i); }); });
+
+    // swipe / arrastre (pointer cubre mouse + touch); umbral 45 px, sobre todo horizontal
+    var x0 = null, y0 = null;
+    var onDown = function(x, y){ x0 = x; y0 = y; };
+    var onUp = function(x, y){
+      if(x0 == null) return;
+      var dx = x - x0, dy = y - y0;
+      x0 = null;
+      if(Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) go(idx + (dx < 0 ? 1 : -1));
+    };
+    if(window.PointerEvent){
+      car.addEventListener('pointerdown', function(e){ if(e.pointerType !== 'mouse' || e.button === 0) onDown(e.clientX, e.clientY); });
+      car.addEventListener('pointerup', function(e){ onUp(e.clientX, e.clientY); });
+      car.addEventListener('pointercancel', function(){ x0 = null; });
+    } else {
+      car.addEventListener('touchstart', function(e){ var t = e.changedTouches[0]; onDown(t.clientX, t.clientY); }, {passive:true});
+      car.addEventListener('touchend', function(e){ var t = e.changedTouches[0]; onUp(t.clientX, t.clientY); }, {passive:true});
+    }
+
+    // pausas: fuera de vista, hover, foco de teclado, pestaña oculta
+    var checkView = function(){
+      var r = car.getBoundingClientRect();
+      var vis = r.top < innerHeight * 0.75 && r.bottom > innerHeight * 0.25;
+      if(vis !== inView){ inView = vis; vis ? start() : stop(); }
+    };
+    car.addEventListener('mouseenter', function(){ hovering = true; stop(); });
+    car.addEventListener('mouseleave', function(){ hovering = false; start(); });
+    car.addEventListener('focusin', function(){ focused = true; stop(); });
+    car.addEventListener('focusout', function(){ focused = false; start(); });
+    window.addEventListener('scroll', checkView, {passive:true});
+    window.addEventListener('resize', checkView, {passive:true});
+    document.addEventListener('visibilitychange', function(){ document.hidden ? stop() : start(); });
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting && !inView){ inView = true; start(); } });
+      }, {threshold:0.3}).observe(car);
+    }
+
+    render();
+    checkView();
+    setTimeout(checkView, 800);
   }
 
   // Hide floating WA when footer visible
