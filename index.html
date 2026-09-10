@@ -147,9 +147,8 @@
   .hero__bg::after{content:"";position:absolute;inset:0;background:
      linear-gradient(180deg,rgba(29,32,25,.5) 0%,rgba(29,32,25,.28) 26%,rgba(29,32,25,.62) 62%,rgba(29,32,25,.92) 100%)}
   .hero__sun{
-    position:absolute;z-index:-2;width:min(120vw,1100px);aspect-ratio:1;border-radius:50%;
-    left:50%;top:8%;transform:translate(-50%,-40%);
-    background:radial-gradient(circle at 50% 60%,rgba(214,199,150,.5),rgba(214,199,150,0) 62%);
+    position:absolute;z-index:-2;inset:-30% -20% auto -20%;height:120%;
+    background:radial-gradient(60% 46% at 62% 30%,rgba(224,206,150,.28),rgba(224,206,150,0) 70%);
     pointer-events:none;
   }
   .hero__inner{position:relative;color:var(--cream);max-width:52rem}
@@ -625,9 +624,7 @@
         var rect = el.closest('section').getBoundingClientRect();
         var prog = (rect.top + rect.height/2 - vh/2);
         var sp = parseFloat(el.dataset.par);
-        el.style.transform = (el.classList.contains('hero__sun')
-          ? 'translate(-50%,-40%) translateY(' + (prog*sp*0.1) + 'px)'
-          : 'translateY(' + (prog*sp*(el.classList.contains('hero__mark')?-0.08:0.12)) + 'px)');
+        el.style.transform = 'translateY(' + (prog*sp*0.12) + 'px)';
       });
       ticking = false;
     };
